@@ -1,14 +1,19 @@
 package pl.devant.whattoeat;
 
+import android.Manifest;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +23,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.karan.churi.PermissionManager.PermissionManager;
+
+import java.util.ArrayList;
+
 import pl.devant.whattoeat.factory.FragmentFactory;
 import pl.devant.whattoeat.factory.FragmentInteractionListener;
 
@@ -26,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private PermissionManager permissionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, permissionManager.getStatus().get(0).granted.get(0), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -61,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        permissionManager = new PermissionManager() {};
+        permissionManager.checkAndRequestPermissions(this);
+
+
     }
 
     @Override
@@ -126,4 +140,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewPager.setCurrentItem(position, true);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionManager.checkResult(requestCode, permissions, grantResults);
+
+
+    }
 }
