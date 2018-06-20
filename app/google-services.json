@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "741374511713",
+    "firebase_url": "https://whattoeat-1529174872113.firebaseio.com",
+    "project_id": "whattoeat-1529174872113",
+    "storage_bucket": "whattoeat-1529174872113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741374511713:android:9330e6db9c78eb73",
+        "android_client_info": {
+          "package_name": "pl.devant.whattoeat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741374511713-a0sq9ee1htnkrnqmk9iaqbsrp3j6esql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.devant.whattoeat",
+            "certificate_hash": "27c357a8c3127c843052618300c91e750b85db2e"
+          }
+        },
+        {
+          "client_id": "741374511713-9kvqen23iqccib0rba9034pbgf189u6q.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "741374511713-9kvqen23iqccib0rba9034pbgf189u6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWDI6065PXJyj6TGT9VQaHB35Yss5a-n4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741374511713-9kvqen23iqccib0rba9034pbgf189u6q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

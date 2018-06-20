@@ -1,4 +1,4 @@
-package pl.devant.whattoeat.factory;
+package pl.devant.whattoeat.Fragments.factory;
 
 
 import android.support.v4.app.Fragment;

@@ -53,20 +53,20 @@
                 android:transitionName="eventSharedImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/danie" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif"
                 android:text="Turas z głównego"
                 android:textColor="#3C3959"
                 android:textSize="22sp"
-                app:layout_constraintTop_toBottomOf="@+id/restaurantImage"
-                tools:layout_editor_absoluteX="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantImage" />
 
             <TextView
                 android:id="@+id/dishGramature"
