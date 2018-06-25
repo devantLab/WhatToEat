@@ -3,18 +3,11 @@ package pl.devant.whattoeat.Fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -28,11 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,17 +31,12 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-
 
 import java.text.DecimalFormat;
-import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Optional;
 import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
 
@@ -81,7 +67,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final float DEFAULT_CIRCLE_RADIUS = 200f;
     private static final float DISH_PRICE_START = 1.00f;
     private static final float DISH_PRICE_END = 300.00f;
-
+    private static final int CIRCLE_FILL_COLOR = 0x1600ff00;
+    private static final int CIRCLE_COLOR = 0x8000ff00;
     public MapFragment() {}
 
     @Override
@@ -207,8 +194,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             circle = mMap.addCircle(new CircleOptions()
                     .center(new LatLng(location.getLatitude(), location.getLongitude()))
                     .radius(radius)
-                    .strokeColor(Color.parseColor("#00ff00"))
-                    .fillColor(0x2600ff00));
+                    .strokeColor(CIRCLE_COLOR)
+                    .fillColor(CIRCLE_FILL_COLOR));
             return circle;
     }
     private void fabClick(){
