@@ -1,10 +1,9 @@
-package pl.devant.whattoeat.Presenters;
+package pl.devant.whattoeat.presenters;
 
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -32,10 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import pl.devant.whattoeat.Fragments.HomeFragment;
-import pl.devant.whattoeat.Fragments.MapFragment;
-import pl.devant.whattoeat.Fragments.RandomFragment;
-import pl.devant.whattoeat.Fragments.factory.FragmentFactory;
+import pl.devant.whattoeat.fragments.factory.FragmentFactory;
 import pl.devant.whattoeat.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback{
@@ -181,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-
+                Log.d(TAG, "onSuccess: Location" + location.toString());
             }
         });
     }

@@ -1,4 +1,4 @@
-package pl.devant.whattoeat.Fragments;
+package pl.devant.whattoeat.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

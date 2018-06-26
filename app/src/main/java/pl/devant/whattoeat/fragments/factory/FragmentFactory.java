@@ -1,10 +1,10 @@
-package pl.devant.whattoeat.Fragments.factory;
+package pl.devant.whattoeat.fragments.factory;
 
 import android.support.v4.app.Fragment;
 
-import pl.devant.whattoeat.Fragments.HomeFragment;
-import pl.devant.whattoeat.Fragments.MapFragment;
-import pl.devant.whattoeat.Fragments.RandomFragment;
+import pl.devant.whattoeat.fragments.HomeFragment;
+import pl.devant.whattoeat.fragments.MapFragment;
+import pl.devant.whattoeat.fragments.RandomFragment;
 
 
 /**

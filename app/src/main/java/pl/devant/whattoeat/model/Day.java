@@ -5,6 +5,7 @@ package pl.devant.whattoeat.model;
  */
 
 public class Day {
+
     private String from;
     private String to;
 

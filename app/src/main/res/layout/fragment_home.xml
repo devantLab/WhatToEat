@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.devant.whattoeat.Fragments.HomeFragment"
+    tools:context="pl.devant.whattoeat.fragments.HomeFragment"
     android:background="#f2f2f2">
 
     <SearchView
