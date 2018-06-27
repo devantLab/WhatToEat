@@ -1,4 +1,4 @@
-package pl.devant.whattoeat.model;
+package pl.devant.whattoeat.model.data;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ public class Restaurant {
 
     public Restaurant(){};
 
-    public String getName() {
+    public String getRestName() {
         return restName;
     }
 

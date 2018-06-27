@@ -2,9 +2,13 @@ package pl.devant.whattoeat.presenters;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -30,9 +34,18 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import pl.devant.whattoeat.fragments.factory.FragmentFactory;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.data.DataViewModel;
+import pl.devant.whattoeat.model.data.Dish;
+import pl.devant.whattoeat.model.data.Restaurant;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback{
 
@@ -41,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
+    private SharedPreferences mPrefs;
+    private ViewModel viewModel;
+    private ArrayList<Restaurant> restaurant = new ArrayList<>();
+    private ArrayList<Dish> dishes = new ArrayList<>();
+    private ArrayList<Dish> dish = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -74,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         toolbar.setTitleMarginStart(220);
 
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -87,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         isServicesOK();
         getLocationPermission();
         getDeviceLocation();
+        getData();
     }
 
     @Override
@@ -194,6 +216,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
+    private void getData(){
+
+        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
+        Gson gson = new Gson();
+        String json = mPrefs.getString("restaurants","");
+
+        restaurant = gson.fromJson(json, listType);
+
+        for(int i = 0; i<restaurant.size(); i ++)
+        {
+        dish = (ArrayList<Dish>) restaurant.get(i).getDishes();
+        }
+
+        Log.wtf(TAG, restaurant.toString());
+        Log.wtf(TAG, dish.toString());
+    }
+
+    private void setDataToModel(){
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionsGranted = false;

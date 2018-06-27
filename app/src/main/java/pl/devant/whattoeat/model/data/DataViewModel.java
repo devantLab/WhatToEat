@@ -1,4 +1,4 @@
-package pl.devant.whattoeat.model;
+package pl.devant.whattoeat.model.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

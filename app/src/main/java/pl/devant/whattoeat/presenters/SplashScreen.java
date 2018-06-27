@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.firebase.database.ChildEventListener;
@@ -25,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.devant.whattoeat.R;
-import pl.devant.whattoeat.model.DataViewModel;
-import pl.devant.whattoeat.model.Dish;
-import pl.devant.whattoeat.model.Restaurant;
+import pl.devant.whattoeat.model.data.DataViewModel;
+import pl.devant.whattoeat.model.data.Dish;
+import pl.devant.whattoeat.model.data.Restaurant;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -42,7 +41,6 @@ public class SplashScreen extends AppCompatActivity {
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
-    private DataViewModel mModel;
     private boolean mLocationPermissionsGranted = false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -55,7 +53,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spash_screen);
 
-        mModel = ViewModelProviders.of(this).get(DataViewModel.class);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         databaseGetCount();
@@ -95,7 +92,7 @@ public class SplashScreen extends AppCompatActivity {
 
                 if(restaurants.size()==restaurantsCount)
                 {
-                    setDataToModel();
+                    setDataToSharedPreferences();
                     startMainActivity();
                 }
             }
@@ -127,7 +124,7 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setDataToModel(){
+    private void setDataToSharedPreferences(){
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Type listType = new TypeToken<List<Restaurant>>(){}.getType();
         Gson gson = new Gson();

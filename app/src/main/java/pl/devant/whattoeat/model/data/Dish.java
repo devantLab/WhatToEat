@@ -1,12 +1,15 @@
-package pl.devant.whattoeat.model;
+package pl.devant.whattoeat.model.data;
 
-import java.util.Map;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 
 /**
  * Created by thomas on 24.06.18.
  */
 
-public class Dish extends Restaurant {
+public class Dish extends Restaurant implements Parcelable {
 
     private String dishName;
     private String ingredients;
@@ -14,15 +17,16 @@ public class Dish extends Restaurant {
     private String mark;
     private String price;
     private int clicks;
+    private ArrayList<Dish> dish;
 
-    public Dish(){};
+    public Dish(){}
 
     public Dish(Dish dish, Restaurant restaurant) {
 
-        super(restaurant.getName(), restaurant.getDescription(), restaurant.getCity(),
+        super(restaurant.getRestName(), restaurant.getDescription(), restaurant.getCity(),
                 restaurant.getStreet(),restaurant.getCoordinates(),restaurant.getImages(),
                 restaurant.getDishes(), restaurant.getOpenHours());
-        this.dishName = dish.getName();
+        this.dishName = dish.getDishName();
         this.ingredients = dish.getIngredients();
         this.value = dish.getValue();
         this.mark = dish.getMark();
@@ -31,7 +35,7 @@ public class Dish extends Restaurant {
 
     }
 
-    public String getName() {
+    public String getDishName() {
         return dishName;
     }
 
@@ -95,4 +99,41 @@ public class Dish extends Restaurant {
         result = 31 * result + clicks;
         return result;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(dishName);
+        dest.writeString(ingredients);
+        dest.writeString(value);
+        dest.writeString(price);
+        dest.writeString(mark);
+    }
+
+
+    public Dish(Parcel in)
+    {
+        dishName = in.readString();
+        ingredients = in.readString();
+        value = in.readString();
+        price = in.readString();
+        mark = in.readString();
+    }
+
+    public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
+        @Override
+        public Dish createFromParcel(Parcel source) {
+            return new Dish(source);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
+
 }
