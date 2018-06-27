@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.devant.whattoeat.Fragments.MapFragment">
+    tools:context="pl.devant.whattoeat.fragments.MapFragment">
 
 
     <com.google.android.gms.maps.MapView
@@ -24,7 +24,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
-        android:src="@drawable/ic_menu_manage"
+        android:focusable="true"
+        android:src="@android:drawable/ic_menu_manage"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.948"
