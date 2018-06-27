@@ -11,10 +11,10 @@ import java.util.List;
 
 public class DataViewModel extends ViewModel {
 
-    private MutableLiveData<List<Restarant>> restaurants;
+    private MutableLiveData<List<Restaurant>> restaurants;
     private MutableLiveData<List<Dish>> dishes;
 
-    public MutableLiveData<List<Restarant>> getRestaurants() {
+    public MutableLiveData<List<Restaurant>> getRestaurants() {
         if (restaurants == null) {
             restaurants = new MutableLiveData<>();
         }

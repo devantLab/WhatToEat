@@ -1,26 +1,34 @@
 package pl.devant.whattoeat.model;
 
+import java.util.Map;
+
 /**
  * Created by thomas on 24.06.18.
  */
 
-public class Dish extends Restarant {
+public class Dish extends Restaurant {
 
     private String name;
     private String ingredients;
     private String value;
-    private double mark;
-    private double price;
+    private String mark;
+    private String price;
     private int clicks;
 
+    public Dish(){};
 
-    public Dish(String name, String ingredients, String value, String mark, String price, int clicks) {
-        this.name = name;
-        this.ingredients = ingredients;
-        this.value = value;
-        this.mark = (mark != null) ? Double.parseDouble(mark) : 0.0;
-        this.price = (price != null) ? Double.parseDouble(price) : 0.0;
-        this.clicks = clicks;
+    public Dish(Dish dish, Restaurant restaurant) {
+
+        super(restaurant.getName(), restaurant.getDescription(), restaurant.getCity(),
+                restaurant.getStreet(),restaurant.getCoordinates(),restaurant.getImages(),
+                restaurant.getDishes(), restaurant.getOpenHours());
+        this.name = dish.getName();
+        this.ingredients = dish.getIngredients();
+        this.value = dish.getValue();
+        this.mark = dish.getMark();
+        this.price = dish.getPrice();
+        this.clicks = dish.getClicks();
+
     }
 
     public String getName() {
@@ -35,11 +43,11 @@ public class Dish extends Restarant {
         return value;
     }
 
-    public double getMark() {
+    public String getMark() {
         return mark;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -63,28 +71,27 @@ public class Dish extends Restarant {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Dish dish = (Dish) o;
 
-        if (Double.compare(dish.mark, mark) != 0) return false;
-        if (Double.compare(dish.price, price) != 0) return false;
         if (clicks != dish.clicks) return false;
-        if (!name.equals(dish.name)) return false;
-        if (!ingredients.equals(dish.ingredients)) return false;
-        return value.equals(dish.value);
+        if (name != null ? !name.equals(dish.name) : dish.name != null) return false;
+        if (ingredients != null ? !ingredients.equals(dish.ingredients) : dish.ingredients != null)
+            return false;
+        if (value != null ? !value.equals(dish.value) : dish.value != null) return false;
+        if (mark != null ? !mark.equals(dish.mark) : dish.mark != null) return false;
+        return price != null ? price.equals(dish.price) : dish.price == null;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = name.hashCode();
-        result = 31 * result + ingredients.hashCode();
-        result = 31 * result + value.hashCode();
-        temp = Double.doubleToLongBits(mark);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (mark != null ? mark.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + clicks;
         return result;
     }

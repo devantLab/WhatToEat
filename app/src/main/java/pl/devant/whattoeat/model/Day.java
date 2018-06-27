@@ -9,6 +9,8 @@ public class Day {
     private String from;
     private String to;
 
+    public Day(){};
+
     public Day(String from, String to) {
         this.from = from;
         this.to = to;

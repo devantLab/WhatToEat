@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/dish_item"
+        layout="@layout/dish_of_the_day_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="68dp"
