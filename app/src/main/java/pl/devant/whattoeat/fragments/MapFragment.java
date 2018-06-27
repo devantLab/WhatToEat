@@ -3,11 +3,18 @@ package pl.devant.whattoeat.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -31,19 +38,32 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.DataViewModel;
+import pl.devant.whattoeat.model.Restaurant;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     //debug
     private static final String TAG = "MapFragment";
+
+    private SharedPreferences mPrefs;
+
+    private DataViewModel mModel;
+    private ArrayList<Restaurant> restaurant;
 
     //Map configuration components
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -81,9 +101,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-
+        mModel = ViewModelProviders.of(this).get(DataViewModel.class);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        getData();
         fabClick();
         Log.d(TAG, "onCreateView: Current circle range is " + DEFAULT_CIRCLE_RADIUS);
+
         return view;
     }
 
@@ -121,12 +144,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             });
 
+        addMarkers();
 
         } catch (Resources.NotFoundException e) {
             Log.d(TAG, "onMapReady: " + e.getMessage());
         }
         getDeviceLocation();
-
 
         Toast.makeText(getContext(), "Map is ready! Yupi!", Toast.LENGTH_SHORT).show();
     }
@@ -277,5 +300,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+    }
+
+    private void addMarkers(){
+        for(int i = 0; i<restaurant.size(); i++ )
+        {
+            Restaurant rest = restaurant.get(i);
+            Log.wtf(TAG, rest.toString());
+            double lat = Double.parseDouble(rest.getCoordinates().get("latitude"));
+            double lng = Double.parseDouble(rest.getCoordinates().get("longitude"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("dupa"));
+        }
+    }
+
+    private void getData(){
+        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
+        Gson gson = new Gson();
+        String json = mPrefs.getString("restaurants","");
+        restaurant = gson.fromJson(json, listType);
+        Log.wtf(TAG, restaurant.toString());
     }
 }

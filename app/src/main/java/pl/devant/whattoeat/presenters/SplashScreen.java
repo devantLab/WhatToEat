@@ -3,7 +3,9 @@ package pl.devant.whattoeat.presenters;
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,8 +17,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import pl.devant.whattoeat.R;
 import pl.devant.whattoeat.model.DataViewModel;
@@ -26,9 +32,10 @@ import pl.devant.whattoeat.model.Restaurant;
 public class SplashScreen extends AppCompatActivity {
 
     private static final String TAG = "SplashScreen";
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference().child("restaurants");
-    DatabaseReference myRefCount = database.getReference().child("restaurantsCount");
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference().child("restaurants");
+    private DatabaseReference myRefCount = database.getReference().child("restaurantsCount");
+    private SharedPreferences mPrefs;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -49,6 +56,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_spash_screen);
 
         mModel = ViewModelProviders.of(this).get(DataViewModel.class);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         databaseGetCount();
         databaseConnection();
@@ -74,6 +82,7 @@ public class SplashScreen extends AppCompatActivity {
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.wtf(TAG, dataSnapshot.toString());
                 Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
                 Log.d(TAG, "onDataChange: "+ restaurant.toString());
                 for (int i = 0; i < restaurant.getDishes().size(); i++){
@@ -86,6 +95,7 @@ public class SplashScreen extends AppCompatActivity {
 
                 if(restaurants.size()==restaurantsCount)
                 {
+                    setDataToModel();
                     startMainActivity();
                 }
             }
@@ -117,4 +127,12 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void setDataToModel(){
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
+        Gson gson = new Gson();
+        String json = gson.toJson(restaurants, listType);
+        prefsEditor.putString("restaurants", json);
+        prefsEditor.apply();
+    }
 }

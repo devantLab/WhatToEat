@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Dish extends Restaurant {
 
-    private String name;
+    private String dishName;
     private String ingredients;
     private String value;
     private String mark;
@@ -22,7 +22,7 @@ public class Dish extends Restaurant {
         super(restaurant.getName(), restaurant.getDescription(), restaurant.getCity(),
                 restaurant.getStreet(),restaurant.getCoordinates(),restaurant.getImages(),
                 restaurant.getDishes(), restaurant.getOpenHours());
-        this.name = dish.getName();
+        this.dishName = dish.getName();
         this.ingredients = dish.getIngredients();
         this.value = dish.getValue();
         this.mark = dish.getMark();
@@ -32,7 +32,7 @@ public class Dish extends Restaurant {
     }
 
     public String getName() {
-        return name;
+        return dishName;
     }
 
     public String getIngredients() {
@@ -58,7 +58,7 @@ public class Dish extends Restaurant {
     @Override
     public String toString() {
         return "Dish{" +
-                "name='" + name + '\'' +
+                "dishName='" + dishName + '\'' +
                 ", ingredients='" + ingredients + '\'' +
                 ", value='" + value + '\'' +
                 ", mark=" + mark +
@@ -76,7 +76,7 @@ public class Dish extends Restaurant {
         Dish dish = (Dish) o;
 
         if (clicks != dish.clicks) return false;
-        if (name != null ? !name.equals(dish.name) : dish.name != null) return false;
+        if (dishName != null ? !dishName.equals(dish.dishName) : dish.dishName != null) return false;
         if (ingredients != null ? !ingredients.equals(dish.ingredients) : dish.ingredients != null)
             return false;
         if (value != null ? !value.equals(dish.value) : dish.value != null) return false;
@@ -87,7 +87,7 @@ public class Dish extends Restaurant {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (dishName != null ? dishName.hashCode() : 0);
         result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (mark != null ? mark.hashCode() : 0);

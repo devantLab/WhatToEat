@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Restaurant {
 
-    private String name;
+    private String restName;
     private String description;
     private String city;
     private String street;
@@ -19,10 +19,10 @@ public class Restaurant {
     private Map<String, Day> openHours;
 
 
-    public Restaurant(String name, String description, String city,
+    public Restaurant(String restName, String description, String city,
                       String street, Map<String, String> coordinates,
                       List<String> images, List<Dish> dishes, Map<String, Day> openHours) {
-        this.name = name;
+        this.restName = restName;
         this.description = description;
         this.city = city;
         this.street = street;
@@ -35,7 +35,7 @@ public class Restaurant {
     public Restaurant(){};
 
     public String getName() {
-        return name;
+        return restName;
     }
 
     public String getDescription() {
@@ -73,7 +73,7 @@ public class Restaurant {
 
         Restaurant restaurant = (Restaurant) o;
 
-        if (name != null ? !name.equals(restaurant.name) : restaurant.name != null) return false;
+        if (restName != null ? !restName.equals(restaurant.restName) : restaurant.restName != null) return false;
         if (description != null ? !description.equals(restaurant.description) : restaurant.description != null)
             return false;
         if (city != null ? !city.equals(restaurant.city) : restaurant.city != null) return false;
@@ -90,7 +90,7 @@ public class Restaurant {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = restName != null ? restName.hashCode() : 0;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (street != null ? street.hashCode() : 0);
@@ -104,7 +104,7 @@ public class Restaurant {
     @Override
     public String toString() {
         return "Restaurant{" +
-                "name='" + name + '\'' +
+                "restName='" + restName + '\'' +
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
