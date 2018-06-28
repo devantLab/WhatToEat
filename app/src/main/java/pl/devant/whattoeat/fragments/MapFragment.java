@@ -60,7 +60,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private SharedPreferences mPrefs;
 
-    private DataViewModel mModel;
     private ArrayList<Restaurant> restaurant;
 
     //Map configuration components
@@ -99,7 +98,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-        mModel = ViewModelProviders.of(this).get(DataViewModel.class);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         getData();
         fabClick();

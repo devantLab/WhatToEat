@@ -27,7 +27,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
     @Override
     public DishViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(parent.getContext()).
-               inflate(R.layout.activity_dishes_list, parent, false);
+               inflate(R.layout.dish_list_item, parent, false);
        DishViewHolder viewHolder = new DishViewHolder(view);
 
 
@@ -50,6 +50,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
         private TextView dishName;
         private TextView value;
         private TextView price;
+        private TextView restaurantName;
 
 
         public DishViewHolder(View itemView) {
@@ -58,6 +59,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
             dishName = itemView.findViewById(R.id.dishName);
             value = itemView.findViewById(R.id.dishGramature);
             price = itemView.findViewById(R.id.dishPrice);
+            restaurantName = itemView.findViewById(R.id.restaurantName);
             itemView.setOnClickListener(this);
         }
 
@@ -65,6 +67,7 @@ public class DishAdapter extends RecyclerView.Adapter<DishAdapter.DishViewHolder
             dishName.setText(dish.getDishName());
             value.setText(dish.getValue());
             price.setText(dish.getPrice());
+            restaurantName.setText(dish.getRestName());
         }
 
         @Override

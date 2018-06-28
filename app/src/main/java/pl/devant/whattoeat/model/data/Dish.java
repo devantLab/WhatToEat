@@ -108,20 +108,16 @@ public class Dish extends Restaurant implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(dishName);
-        dest.writeString(ingredients);
         dest.writeString(value);
         dest.writeString(price);
-        dest.writeString(mark);
     }
 
 
     public Dish(Parcel in)
     {
         dishName = in.readString();
-        ingredients = in.readString();
         value = in.readString();
         price = in.readString();
-        mark = in.readString();
     }
 
     public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {

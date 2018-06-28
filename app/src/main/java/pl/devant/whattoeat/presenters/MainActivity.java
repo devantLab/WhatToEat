@@ -2,7 +2,6 @@ package pl.devant.whattoeat.presenters;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -34,6 +33,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -55,10 +60,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager;
 
     private SharedPreferences mPrefs;
-    private ViewModel viewModel;
-    private ArrayList<Restaurant> restaurant = new ArrayList<>();
+    private DataViewModel viewModel;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference().child("restaurants");
+    private DatabaseReference myRefCount = database.getReference().child("restaurantsCount");
+    private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
-    private ArrayList<Dish> dish = new ArrayList<>();
+    private int restaurantsCount;
+
 
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -77,24 +86,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragmentFactory = new FragmentFactory();
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
         toolbar.setTitleMarginStart(220);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
+
+        fragmentFactory = new FragmentFactory();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        mViewPager = findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,7 +112,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         isServicesOK();
         getLocationPermission();
         getDeviceLocation();
-        getData();
+//        getData();
+
+
+        // Set up the ViewPager with the sections adapter.
+
     }
 
     @Override
@@ -223,18 +231,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Gson gson = new Gson();
         String json = mPrefs.getString("restaurants","");
 
-        restaurant = gson.fromJson(json, listType);
+        restaurants = gson.fromJson(json, listType);
 
-        for(int i = 0; i<restaurant.size(); i ++)
+        for(int i = 0; i<restaurants.size(); i ++)
         {
-        dish = (ArrayList<Dish>) restaurant.get(i).getDishes();
+        dishes = (ArrayList<Dish>) restaurants.get(i).getDishes();
         }
 
-        Log.wtf(TAG, restaurant.toString());
-        Log.wtf(TAG, dish.toString());
-    }
-
-    private void setDataToModel(){
+        Log.wtf(TAG+": getData: ", restaurants.toString());
+        Log.wtf(TAG+": getData: ", dishes.toString());
 
     }
 

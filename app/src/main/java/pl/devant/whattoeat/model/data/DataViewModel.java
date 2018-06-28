@@ -20,10 +20,12 @@ public class DataViewModel extends ViewModel {
         this.restaurants.setValue(restaurants);
         Log.wtf("Data", restaurants.toString());
     }
+
     public void setDishes(ArrayList<Dish> dishes)
     {
         this.dishes.setValue(dishes);
     }
+
     public LiveData<ArrayList<Restaurant>> getRestaurants() {
         if (restaurants == null) {
             restaurants = new MutableLiveData<>();

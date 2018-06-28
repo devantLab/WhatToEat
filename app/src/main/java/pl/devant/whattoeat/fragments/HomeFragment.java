@@ -1,9 +1,12 @@
 package pl.devant.whattoeat.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import butterknife.OnClick;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 import pl.devant.whattoeat.presenters.DishesListActivity;
@@ -34,8 +38,8 @@ public class HomeFragment extends Fragment {
     private Button randomDishChangeButton;
     private SearchView searchView;
 
-
-    private ArrayList<Restaurant> restaurant = new ArrayList<>();
+    private SharedPreferences mPrefs;
+    private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
 
 
@@ -50,32 +54,53 @@ public class HomeFragment extends Fragment {
         randomDishChangeButton = view.findViewById(R.id.randomDishChangeButton);
         searchView = view.findViewById(R.id.homeSearchView);
 
-        randomDishChangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DishesListActivity.class);
-                startActivity(intent);
-            }
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        randomDishChangeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), DishesListActivity.class);
+            startActivity(intent);
         });
 
-//        search(searchView.getQuery().toString());
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                search(query);
+                Log.d(TAG, "onQueryTextSubmit: "+query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         getDishesData();
         return view;
     }
 
 
-
-
     private void getDishesData(){
+        Type listType = new TypeToken<List<Dish>>(){}.getType();
+        Gson gson = new Gson();
+        String json = mPrefs.getString("dishes","");
 
+        dishes = gson.fromJson(json, listType);
 
+        Log.wtf(TAG+": getData: ", restaurants.toString());
+        Log.wtf(TAG+": getData: ", dishes.toString());
     }
 
-//    private void search(String searchDish){
-//
-//        Intent intent = new Intent(getContext(), DishesListActivity.class);
-//        intent.putExtra("matchDishes", matchDishes);
-//        startActivity(intent);
-//    }
+    private void search(String searchDish){
+        Intent intent = new Intent(getContext(), DishesListActivity.class);
+        for(int i = 0; i< dishes.size(); i++)
+        {
+            if(dishes.get(i).getDishName().contains(searchDish))
+            {
+                intent.putExtra("matchDishes", dishes);
+                startActivity(intent);
+            }
+        }
+    }
 }

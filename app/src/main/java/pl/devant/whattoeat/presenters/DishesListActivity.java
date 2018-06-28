@@ -1,5 +1,6 @@
 package pl.devant.whattoeat.presenters;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +25,9 @@ public class DishesListActivity extends AppCompatActivity {
 
     private static final String TAG = "DishesListFragment";
 
-    private SharedPreferences mPrefs;
-
     private DishAdapter dishAdapter;
     private RecyclerView recyclerView;
 
-    private ArrayList<Restaurant> restaurant = new ArrayList<>();
-    private ArrayList<Dish> dish = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
 
 
@@ -39,22 +36,20 @@ public class DishesListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dishes_list);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        dishes = (ArrayList<Dish>) getIntent().getExtras().get("matchDishes");
+
 
         recyclerView = findViewById(R.id.dishRecyclerView);
-        dishAdapter = new DishAdapter(dish);
+
+        dishAdapter = new DishAdapter(dishes);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dishAdapter);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-
         getDishesData();
 
-        Log.wtf(TAG, "dish: "+dish.toString());
-        Log.wtf(TAG, "dishes: "+dishes.toString());
-        Log.wtf(TAG, "res: "+restaurant.toString());
+//        Log.wtf(TAG, "dish: "+dishes.toString());
+//        Log.wtf(TAG, "res: "+restaurants.toString());
 
     }
 

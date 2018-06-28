@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.firebase.database.ChildEventListener;
@@ -84,7 +85,8 @@ public class SplashScreen extends AppCompatActivity {
                 Log.d(TAG, "onDataChange: "+ restaurant.toString());
                 for (int i = 0; i < restaurant.getDishes().size(); i++){
                     Dish dish = new Dish(restaurant.getDishes().get(i), restaurant);
-//                    Toast.makeText(SplashScreen.this, ""+ dish.getCoordinates(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SplashScreen.this, ""+ dish.getCoordinates(), Toast.LENGTH_SHORT).show();
+
                     dishes.add(dish);
                 }
 
@@ -126,10 +128,13 @@ public class SplashScreen extends AppCompatActivity {
 
     private void setDataToSharedPreferences(){
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
+        Type restaurantListType = new TypeToken<List<Restaurant>>(){}.getType();
+        Type dishListType = new TypeToken<List<Dish>>(){}.getType();
         Gson gson = new Gson();
-        String json = gson.toJson(restaurants, listType);
-        prefsEditor.putString("restaurants", json);
+        String restaurantJson = gson.toJson(restaurants, restaurantListType);
+        String dishJson = gson.toJson(dishes, dishListType);
+        prefsEditor.putString("restaurants", restaurantJson);
+        prefsEditor.putString("dishes", dishJson);
         prefsEditor.apply();
     }
 }
