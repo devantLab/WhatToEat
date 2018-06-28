@@ -3,11 +3,14 @@ package pl.devant.whattoeat.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,23 +30,37 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.data.DataViewModel;
+import pl.devant.whattoeat.model.data.Restaurant;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     //debug
     private static final String TAG = "MapFragment";
+
+    private SharedPreferences mPrefs;
+
+    private ArrayList<Restaurant> restaurant;
 
     //Map configuration components
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -61,7 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private SeekBar dishPriceSeekBar;
     private TextView dishPriceTextView;
     private TextView rangeTextView;
-
+    private View view;
     //finals
     private static final float DEFAULT_ZOOM = 14f;
     private static final float DEFAULT_CIRCLE_RADIUS = 200f;
@@ -81,9 +98,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        getData();
         fabClick();
         Log.d(TAG, "onCreateView: Current circle range is " + DEFAULT_CIRCLE_RADIUS);
+
         return view;
     }
 
@@ -121,12 +140,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             });
 
-
+        addMarkers();
+        onMarkerClick();
         } catch (Resources.NotFoundException e) {
             Log.d(TAG, "onMapReady: " + e.getMessage());
         }
         getDeviceLocation();
-
 
         Toast.makeText(getContext(), "Map is ready! Yupi!", Toast.LENGTH_SHORT).show();
     }
@@ -172,7 +191,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onSuccess(Location location) {
                 if (location != null) {
                     circle = drawCircle(location, DEFAULT_CIRCLE_RADIUS);
-
                     animateCamera(new LatLng(location.getLatitude(), location.getLongitude()), getZoomLevel(circle));
                 }
             }
@@ -275,6 +293,48 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+    }
+
+    private void addMarkers(){
+        for(int i = 0; i<restaurant.size(); i++ )
+        {
+            Restaurant rest = restaurant.get(i);
+            Log.wtf(TAG, rest.toString());
+            double lat = Double.parseDouble(rest.getCoordinates().get("latitude"));
+            double lng = Double.parseDouble(rest.getCoordinates().get("longitude"));
+
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).
+                    title(rest.getRestName()).icon(BitmapDescriptorFactory.
+                    fromResource(R.drawable.quantum_ic_play_arrow_grey600_48)));
+        }
+    }
+
+    private void getData(){
+        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
+        Gson gson = new Gson();
+        String json = mPrefs.getString("restaurants","");
+        restaurant = gson.fromJson(json, listType);
+        Log.wtf(TAG, restaurant.toString());
+    }
+
+    private void onMarkerClick(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                view = getLayoutInflater().from(getContext()).inflate(R.layout.map_marker_dialog, null, false);
+                builder.setView(view);
+                builder.setPositiveButton("Nawiguj", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
             }
         });
     }

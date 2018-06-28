@@ -1,4 +1,4 @@
-package pl.devant.whattoeat.model;
+package pl.devant.whattoeat.model.data;
 
 /**
  * Created by thomas on 26.06.18.
@@ -8,6 +8,8 @@ public class Day {
 
     private String from;
     private String to;
+
+    public Day(){};
 
     public Day(String from, String to) {
         this.from = from;
