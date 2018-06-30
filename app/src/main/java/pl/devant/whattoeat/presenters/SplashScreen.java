@@ -1,7 +1,6 @@
 package pl.devant.whattoeat.presenters;
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.devant.whattoeat.R;
-import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 
@@ -52,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spash_screen);
+        setContentView(R.layout.activity_splash_screen);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -85,7 +83,7 @@ public class SplashScreen extends AppCompatActivity {
                 Log.d(TAG, "onDataChange: "+ restaurant.toString());
                 for (int i = 0; i < restaurant.getDishes().size(); i++){
                     Dish dish = new Dish(restaurant.getDishes().get(i), restaurant);
-                    Toast.makeText(SplashScreen.this, ""+ dish.getCoordinates(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SplashScreen.this, ""+ dish.getCoordinates(), Toast.LENGTH_SHORT).show();
 
                     dishes.add(dish);
                 }

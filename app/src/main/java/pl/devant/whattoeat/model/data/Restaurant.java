@@ -1,5 +1,9 @@
 package pl.devant.whattoeat.model.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +36,7 @@ public class Restaurant {
         this.openHours = openHours;
     }
 
-    public Restaurant(){};
+    public Restaurant(){}
 
     public String getRestName() {
         return restName;
@@ -114,4 +118,37 @@ public class Restaurant {
                 ", openHours=" + openHours +
                 '}';
     }
+
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeString(restName);
+//        dest.writeString(street);
+//        dest.writeString(city);
+//    }
+//
+//
+//    public Restaurant(Parcel in)
+//    {
+//        restName = in.readString();
+//        street = in.readString();
+//        city = in.readString();
+//    }
+//
+//    public static final Parcelable.Creator<Restaurant> CREATOR = new Parcelable.Creator<Restaurant>() {
+//        @Override
+//        public Restaurant createFromParcel(Parcel source) {
+//            return new Restaurant(source);
+//        }
+//
+//        @Override
+//        public Restaurant[] newArray(int size) {
+//            return new Restaurant[size];
+//        }
+//    };
+
 }

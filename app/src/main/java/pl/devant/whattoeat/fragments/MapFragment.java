@@ -5,11 +5,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -45,6 +47,7 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +55,7 @@ import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
 import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Restaurant;
+import pl.devant.whattoeat.presenters.RestaurantDescriptionActivity;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -217,37 +221,34 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             return circle;
     }
     private void fabClick(){
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                view = getLayoutInflater().from(getContext()).inflate(R.layout.map_fab_dialog, null, false);
-                builder.setView(view);
-                builder.setPositiveButton("Akceptuj", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getDeviceLocation(rangeSeekBar.getProgress(), false);
-                        Log.d(TAG, "onClick: Akceptuj clicked");
-                    }
-                });
-                builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "onClick: Anuluj clicked");
-                    }
-                });
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+        fab.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            view = getLayoutInflater().from(getContext()).inflate(R.layout.map_fab_dialog, null, false);
+            builder.setView(view);
+            builder.setPositiveButton("Akceptuj", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getDeviceLocation(rangeSeekBar.getProgress(), false);
+                    Log.d(TAG, "onClick: Akceptuj clicked");
+                }
+            });
+            builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d(TAG, "onClick: Anuluj clicked");
+                }
+            });
+            final AlertDialog dialog = builder.create();
+            dialog.show();
 
-                dishPriceSeekBar = view.findViewById(R.id.priceSeekBar);
-                rangeSeekBar = view.findViewById(R.id.rangeSeekBar);
-                rangeTextView = view.findViewById(R.id.rangeTextView);
-                dishPriceTextView = view.findViewById(R.id.dishPriceTextView);
-                double radius = (circle != null) ? circle.getRadius() : 0;
+            dishPriceSeekBar = view.findViewById(R.id.priceSeekBar);
+            rangeSeekBar = view.findViewById(R.id.rangeSeekBar);
+            rangeTextView = view.findViewById(R.id.rangeTextView);
+            dishPriceTextView = view.findViewById(R.id.dishPriceTextView);
+            double radius = (circle != null) ? circle.getRadius() : 0;
 
-                rangeTextView.setText((radius < 1000.0) ?(radius + " m") : (decimalFormat.format(radius/1000.0) + " km"));
-                onSeekBarsChanged();
-            }
+            rangeTextView.setText((radius < 1000.0) ?(radius + " m") : (decimalFormat.format(radius/1000.0) + " km"));
+            onSeekBarsChanged();
         });
     }
 
@@ -320,22 +321,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void onMarkerClick(){
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                view = getLayoutInflater().from(getContext()).inflate(R.layout.map_marker_dialog, null, false);
-                builder.setView(view);
-                builder.setPositiveButton("Nawiguj", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        mMap.setOnMarkerClickListener(marker -> {
+            String title;
+            title = marker.getTitle();
 
-                    }
-                });
-                final AlertDialog dialog = builder.create();
-                dialog.show();
-                return true;
-            }
+            Intent intent = new Intent(getContext(), RestaurantDescriptionActivity.class);
+            startActivity(intent);
+            return true;
         });
     }
 }

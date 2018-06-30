@@ -38,7 +38,7 @@ public class DishesListActivity extends AppCompatActivity {
 
         dishes = (ArrayList<Dish>) getIntent().getExtras().get("matchDishes");
 
-
+        Log.d(TAG, "onCreate: "+dishes.toString());
         recyclerView = findViewById(R.id.dishRecyclerView);
 
         dishAdapter = new DishAdapter(dishes);
