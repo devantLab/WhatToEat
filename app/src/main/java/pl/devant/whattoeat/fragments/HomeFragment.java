@@ -1,12 +1,9 @@
 package pl.devant.whattoeat.fragments;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,18 +19,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnClick;
 import pl.devant.whattoeat.R;
-import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
+import pl.devant.whattoeat.presenters.DishDescriptionActivity;
 import pl.devant.whattoeat.presenters.DishesListActivity;
 
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-
 
     private Button randomDishChangeButton;
     private SearchView searchView;
@@ -57,7 +52,7 @@ public class HomeFragment extends Fragment {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         randomDishChangeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), DishesListActivity.class);
+            Intent intent = new Intent(getContext(), DishDescriptionActivity.class);
             startActivity(intent);
         });
 

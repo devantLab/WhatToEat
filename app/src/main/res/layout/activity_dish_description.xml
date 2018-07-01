@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="pl.devant.whattoeat.presenters.DishDescriptionActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@drawable/gradient_background"
+            android:layout_width="match_parent"
+            android:layout_height="245dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/dishDescriptionImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/ic_pizza_64dp"
+                android:transitionName="dishItemImage"
+                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/dishDescriptionNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:transitionName="dishItemDishName"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Dish Name"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="205dp"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            android:elevation="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price"
+                        android:textSize="16sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/dishDescriptionPriceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19.99"
+                        android:textSize="26sp"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        android:transitionName="dishItemPrice"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gramature"
+                        android:textSize="16sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/dishDescriptionGramatureTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="450g"
+                        android:textSize="26sp"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        android:transitionName="dishItemGramature"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/dishDescriptionMarkView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mark"
+                        android:textSize="16sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"/>
+                    <TextView
+                        android:id="@+id/dishDescriptionMarkTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.5"
+                        android:textSize="26sp"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="12sp"
+                        android:text="Kliknij i oceń"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="275dp"
+            android:orientation="vertical"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:paddingTop="60dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_ingredients_48dp"/>
+                <TextView
+                    android:id="@+id/dishDescriptionIngredientsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/dish_ingredients"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_name_48dp"/>
+                <TextView
+                    android:id="@+id/dishDescriptionRestaurantNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:transitionName="dishItemRestaurantName"
+                    android:layout_gravity="center_vertical"
+                    android:text="Restaurant Name"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_adress_48dp"/>
+                <TextView
+                    android:id="@+id/dishDescriptionRestaurantAdressTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Restaurant Adress"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:background="@drawable/navigate_button_style"
+                android:text="Navigate" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

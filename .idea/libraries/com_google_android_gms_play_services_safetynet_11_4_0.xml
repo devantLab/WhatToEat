@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="com.google.android.gms:play-services-safetynet-11.4.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-safetynet-11.4.0.aar/0fed3bd6fcfb2aa1b3b9691b4747055d/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-safetynet-11.4.0.aar/0fed3bd6fcfb2aa1b3b9691b4747055d/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-safetynet-11.4.0.aar/ac9de062e706d77855487631333d0b67/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-safetynet-11.4.0.aar/ac9de062e706d77855487631333d0b67/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
