@@ -1,9 +1,7 @@
 package pl.devant.whattoeat.fragments;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 import pl.devant.whattoeat.presenters.DishDescriptionActivity;
@@ -32,8 +26,6 @@ public class HomeFragment extends Fragment {
 
     private Button randomDishChangeButton;
     private SearchView searchView;
-
-    private SharedPreferences mPrefs;
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
 
@@ -49,7 +41,6 @@ public class HomeFragment extends Fragment {
         randomDishChangeButton = view.findViewById(R.id.randomDishChangeButton);
         searchView = view.findViewById(R.id.homeSearchView);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         randomDishChangeButton.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), DishDescriptionActivity.class);
@@ -71,20 +62,17 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        getDishesData();
+        getData();
         return view;
     }
 
 
-    private void getDishesData(){
-        Type listType = new TypeToken<List<Dish>>(){}.getType();
-        Gson gson = new Gson();
-        String json = mPrefs.getString("dishes","");
-
-        dishes = gson.fromJson(json, listType);
-
-        Log.wtf(TAG+": getData: ", restaurants.toString());
-        Log.wtf(TAG+": getData: ", dishes.toString());
+    private void getData(){
+        Bundle bundle = getArguments();
+        restaurants = bundle.getParcelableArrayList(Statemets.BUNDLE_RESTARANTS);
+        dishes = bundle.getParcelableArrayList(Statemets.BUNDLE_DISHES);
+        Log.d(TAG, "getData: " + restaurants);
+        Log.d(TAG, "getData: " + dishes);
     }
 
     private void search(String searchDish){

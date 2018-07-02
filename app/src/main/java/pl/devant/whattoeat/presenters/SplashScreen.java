@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 
@@ -93,7 +94,7 @@ public class SplashScreen extends AppCompatActivity {
                 if(restaurants.size()==restaurantsCount)
                 {
                     setDataToSharedPreferences();
-                    startMainActivity();
+                    startMainActivity(restaurants, dishes);
                 }
             }
 
@@ -119,8 +120,12 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
-    private void startMainActivity(){
+    private void startMainActivity(ArrayList<Restaurant> restaurants, ArrayList<Dish> dishes){
         Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(Statemets.BUNDLE_RESTARANTS, restaurants);
+        bundle.putParcelableArrayList(Statemets.BUNDLE_DISHES, dishes);
+        intent.putExtra(Statemets.BUNDLE, bundle);
         startActivity(intent);
     }
 

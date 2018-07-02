@@ -53,6 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Restaurant;
 import pl.devant.whattoeat.presenters.RestaurantDescriptionActivity;
@@ -64,7 +65,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private SharedPreferences mPrefs;
 
-    private ArrayList<Restaurant> restaurant;
+    private ArrayList<Restaurant> restaurants;
 
     //Map configuration components
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -299,9 +300,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkers(){
-        for(int i = 0; i<restaurant.size(); i++ )
+        for(int i = 0; i<restaurants.size(); i++ )
         {
-            Restaurant rest = restaurant.get(i);
+            Restaurant rest = restaurants.get(i);
             Log.wtf(TAG, rest.toString());
             double lat = Double.parseDouble(rest.getCoordinates().get("latitude"));
             double lng = Double.parseDouble(rest.getCoordinates().get("longitude"));
@@ -313,11 +314,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void getData(){
-        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
-        Gson gson = new Gson();
-        String json = mPrefs.getString("restaurants","");
-        restaurant = gson.fromJson(json, listType);
-        Log.wtf(TAG, restaurant.toString());
+        Bundle bundle = getArguments();
+        restaurants = bundle.getParcelableArrayList(Statemets.BUNDLE_RESTARANTS);
+        Log.d(TAG, "getData: " + restaurants);
     }
 
     private void onMarkerClick(){

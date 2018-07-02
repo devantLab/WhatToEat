@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by thomas on 24.06.18.
@@ -17,7 +19,6 @@ public class Dish extends Restaurant implements Parcelable {
     private String mark;
     private String price;
     private int clicks;
-    private ArrayList<Dish> dish;
 
     public Dish(){}
 
@@ -34,6 +35,28 @@ public class Dish extends Restaurant implements Parcelable {
         this.clicks = dish.getClicks();
 
     }
+
+    protected Dish(Parcel in) {
+        super(in.readString(), in.readString(), in.readString(), in.readString(), in.readHashMap(null), in.createStringArrayList());
+        dishName = in.readString();
+        ingredients = in.readString();
+        value = in.readString();
+        mark = in.readString();
+        price = in.readString();
+        clicks = in.readInt();
+    }
+
+    public static final Creator<Dish> CREATOR = new Creator<Dish>() {
+        @Override
+        public Dish createFromParcel(Parcel in) {
+            return new Dish(in);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
 
     public String getDishName() {
         return dishName;
@@ -57,6 +80,11 @@ public class Dish extends Restaurant implements Parcelable {
 
     public int getClicks() {
         return clicks;
+    }
+
+    @Override
+    public List<Dish> getDishes() {
+        throw new IllegalStateException("You can't access the list of dishes from Dish :)");
     }
 
     @Override
@@ -107,29 +135,17 @@ public class Dish extends Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getRestName());
+        dest.writeString(getDescription());
+        dest.writeString(getCity());
+        dest.writeString(getStreet());
+        dest.writeMap(getCoordinates());
+        dest.writeStringList(getImages());
         dest.writeString(dishName);
+        dest.writeString(ingredients);
         dest.writeString(value);
+        dest.writeString(mark);
         dest.writeString(price);
+        dest.writeInt(clicks);
     }
-
-
-    public Dish(Parcel in)
-    {
-        dishName = in.readString();
-        value = in.readString();
-        price = in.readString();
-    }
-
-    public static final Parcelable.Creator<Dish> CREATOR = new Parcelable.Creator<Dish>() {
-        @Override
-        public Dish createFromParcel(Parcel source) {
-            return new Dish(source);
-        }
-
-        @Override
-        public Dish[] newArray(int size) {
-            return new Dish[size];
-        }
-    };
-
 }
