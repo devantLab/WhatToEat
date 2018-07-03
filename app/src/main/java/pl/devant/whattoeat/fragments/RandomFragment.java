@@ -16,6 +16,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
 import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.Dish;
@@ -23,26 +25,29 @@ import pl.devant.whattoeat.model.data.Restaurant;
 
 
 public class RandomFragment extends Fragment {
-
+    //Debug
     private static final String TAG = "RandomFragment";
-
-    private SharedPreferences mPrefs;
+    //Variables
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
+    private Unbinder unbinder;
 
     public RandomFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.fragment_random, container, false);
-
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
+        unbinder = ButterKnife.bind(this, view);
         getData();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     private void getData() {

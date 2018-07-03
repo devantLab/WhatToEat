@@ -60,37 +60,32 @@ import pl.devant.whattoeat.presenters.RestaurantDescriptionActivity;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
-    //debug
+    //Debug
     private static final String TAG = "MapFragment";
-
-    private SharedPreferences mPrefs;
-
-    private ArrayList<Restaurant> restaurants;
-
     //Map configuration components
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
     private GoogleMap mMap;
     private Circle circle;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private Unbinder unbinder;
     //UI components
-    @BindView(R.id.mapView)
-    MapView mapView;
-    @BindView(R.id.floatingActionButton)
-    FloatingActionButton fab;
-
+    @BindView(R.id.mapView) MapView mapView;
+    @BindView(R.id.floatingActionButton) FloatingActionButton fab;
     private SeekBar rangeSeekBar;
     private SeekBar dishPriceSeekBar;
     private TextView dishPriceTextView;
     private TextView rangeTextView;
     private View view;
-    //finals
+    //Finals
     private static final float DEFAULT_ZOOM = 14f;
     private static final float DEFAULT_CIRCLE_RADIUS = 200f;
     private static final float DISH_PRICE_START = 1.00f;
     private static final float DISH_PRICE_END = 300.00f;
     private static final int CIRCLE_FILL_COLOR = 0x1600ff00;
     private static final int CIRCLE_COLOR = 0x8000ff00;
+    //Variables
+    private ArrayList<Restaurant> restaurants;
+    private Unbinder unbinder;
+
     public MapFragment() {}
 
     @Override
@@ -103,7 +98,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         getData();
         fabClick();
         Log.d(TAG, "onCreateView: Current circle range is " + DEFAULT_CIRCLE_RADIUS);

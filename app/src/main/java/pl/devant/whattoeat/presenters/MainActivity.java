@@ -45,12 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
-//    private SharedPreferences mPrefs;
-//    private DataViewModel viewModel;
-//    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-//    private DatabaseReference myRef = database.getReference().child("restaurants");
-//    private DatabaseReference myRefCount = database.getReference().child("restaurantsCount");
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
 

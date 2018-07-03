@@ -17,7 +17,7 @@ import pl.devant.whattoeat.fragments.RestaurantDescriptionInfoFragment;
 import pl.devant.whattoeat.fragments.RestaurantDescriptionMenuFragment;
 import pl.devant.whattoeat.model.data.Restaurant;
 
-public class RestaurantDescriptionActivity extends AppCompatActivity implements RestaurantDescriptionInfoFragment.OnFragmentInteractionListener, RestaurantDescriptionMenuFragment.OnFragmentInteractionListener {
+public class RestaurantDescriptionActivity extends AppCompatActivity {
     public static final String TAG="RestaurantDescriptionActivity";
 
     private Button infoButton;
@@ -68,8 +68,4 @@ public class RestaurantDescriptionActivity extends AppCompatActivity implements 
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
