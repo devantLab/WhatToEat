@@ -16,47 +16,45 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 
 
 public class RandomFragment extends Fragment {
-
+    //Debug
     private static final String TAG = "RandomFragment";
-
-    private SharedPreferences mPrefs;
+    //Variables
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
+    private Unbinder unbinder;
 
     public RandomFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        final View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        getDishesData();
+        final View view = inflater.inflate(R.layout.fragment_random, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        getData();
 
         return view;
     }
 
-    private void getDishesData(){
-        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
-        Gson gson = new Gson();
-        String json = mPrefs.getString("restaurants","");
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
-        restaurants = gson.fromJson(json, listType);
-
-        for(int i = 0; i<restaurants.size(); i ++)
-        {
-            dishes = (ArrayList<Dish>) restaurants.get(i).getDishes();
-        }
-
-        Log.wtf(TAG+": getData: ", restaurants.toString());
-        Log.wtf(TAG+": getData: ", dishes.toString());
+    private void getData() {
+        Bundle bundle = getArguments();
+        restaurants = bundle.getParcelableArrayList(Statemets.BUNDLE_RESTARANTS);
+        dishes = bundle.getParcelableArrayList(Statemets.BUNDLE_DISHES);
+        Log.d(TAG, "getData: " + restaurants);
+        Log.d(TAG, "getData: " + dishes);
     }
 }

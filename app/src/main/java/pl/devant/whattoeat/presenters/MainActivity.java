@@ -2,12 +2,9 @@ package pl.devant.whattoeat.presenters;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -33,22 +30,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
-import pl.devant.whattoeat.fragments.factory.FragmentFactory;
 import pl.devant.whattoeat.R;
-import pl.devant.whattoeat.model.data.DataViewModel;
+import pl.devant.whattoeat.fragments.factory.FragmentFactory;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.Dish;
 import pl.devant.whattoeat.model.data.Restaurant;
 
@@ -58,15 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
-    private SharedPreferences mPrefs;
-    private DataViewModel viewModel;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference().child("restaurants");
-    private DatabaseReference myRefCount = database.getReference().child("restaurantsCount");
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
     private ArrayList<Dish> dishes = new ArrayList<>();
-    private int restaurantsCount;
+
 
 
     private static final String TAG = "MainActivity";
@@ -85,26 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         toolbar.setTitleMarginStart(220);
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+//        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
 
-        fragmentFactory = new FragmentFactory();
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        setupFragments();
+        setupDrawer(toolbar);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -112,10 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         isServicesOK();
         getLocationPermission();
         getDeviceLocation();
-//        getData();
+        getData();
 
-
-        // Set up the ViewPager with the sections adapter.
 
     }
 
@@ -169,7 +136,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return fragmentFactory.getFragment(position);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(Statemets.BUNDLE_RESTARANTS, restaurants);
+            bundle.putParcelableArrayList(Statemets.BUNDLE_DISHES, dishes);
+            Fragment fragment = fragmentFactory.getFragment(position);
+            fragment.setArguments(bundle);
+            return fragment;
         }
 
         @Override
@@ -207,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                Log.d(TAG, "onSuccess: Location" + location.toString());
+//                Log.d(TAG, "onSuccess: Location" + location.toString());
             }
         });
     }
@@ -227,19 +199,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void getData(){
 
-        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
-        Gson gson = new Gson();
-        String json = mPrefs.getString("restaurants","");
-
-        restaurants = gson.fromJson(json, listType);
-
-        for(int i = 0; i<restaurants.size(); i ++)
-        {
-        dishes = (ArrayList<Dish>) restaurants.get(i).getDishes();
-        }
-
-        Log.wtf(TAG+": getData: ", restaurants.toString());
-        Log.wtf(TAG+": getData: ", dishes.toString());
+        Bundle bundle = getIntent().getBundleExtra(Statemets.BUNDLE);
+        restaurants = bundle.getParcelableArrayList(Statemets.BUNDLE_RESTARANTS);
+        dishes = bundle.getParcelableArrayList(Statemets.BUNDLE_DISHES);
+        Log.d(TAG, "getData: " + dishes);
+        Log.d(TAG, "getData: " + restaurants);
 
     }
 
@@ -265,5 +229,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
         }
+    }
+
+    private void setupDrawer(Toolbar toolbar) {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setupFragments() {
+        fragmentFactory = new FragmentFactory();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        mViewPager = findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 }

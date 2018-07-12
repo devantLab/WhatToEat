@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import java.util.Map;
  * Created by thomas on 24.06.18.
 // */
 
-public class Restaurant {
+public class Restaurant implements Parcelable{
 
     private String restName;
     private String description;
@@ -37,6 +38,36 @@ public class Restaurant {
     }
 
     public Restaurant(){}
+
+    protected Restaurant(Parcel in) {
+        restName = in.readString();
+        description = in.readString();
+        city = in.readString();
+        street = in.readString();
+        coordinates = in.readHashMap(null);
+        images = in.createStringArrayList();
+        dishes = in.createTypedArrayList(Dish.CREATOR);
+    }
+
+    protected Restaurant(String restName, String description, String city, String street, HashMap<String, String> coordinates, ArrayList<String> images) {
+        this.restName = restName;
+        this.description = description;
+        this.city = city;
+        this.street = street;
+        this.images = images;
+        this.coordinates = coordinates;
+    }
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public String getRestName() {
         return restName;
@@ -119,36 +150,20 @@ public class Restaurant {
                 '}';
     }
 
-//    @Override
-//    public int describeContents() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeString(restName);
-//        dest.writeString(street);
-//        dest.writeString(city);
-//    }
-//
-//
-//    public Restaurant(Parcel in)
-//    {
-//        restName = in.readString();
-//        street = in.readString();
-//        city = in.readString();
-//    }
-//
-//    public static final Parcelable.Creator<Restaurant> CREATOR = new Parcelable.Creator<Restaurant>() {
-//        @Override
-//        public Restaurant createFromParcel(Parcel source) {
-//            return new Restaurant(source);
-//        }
-//
-//        @Override
-//        public Restaurant[] newArray(int size) {
-//            return new Restaurant[size];
-//        }
-//    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(restName);
+        dest.writeString(description);
+        dest.writeString(city);
+        dest.writeString(street);
+        dest.writeMap(coordinates);
+        dest.writeStringList(images);
+        dest.writeTypedList(dishes);
+    }
 
 }

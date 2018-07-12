@@ -47,6 +47,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.4.0'
     implementation 'com.google.firebase:firebase-storage:11.4.0'
     implementation 'com.google.firebase:firebase-auth:11.4.0'
+
+    //MaterialSearchBar
+    implementation 'com.github.mancj:MaterialSearchBar:0.7.6'
+    //Ratingbar
+    compile 'com.github.ome450901:SimpleRatingBar:1.4.1'
 }
 
 

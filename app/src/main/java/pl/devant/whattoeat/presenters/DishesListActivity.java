@@ -46,14 +46,12 @@ public class DishesListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dishAdapter);
 
-        getDishesData();
+        getData();
 
-//        Log.wtf(TAG, "dish: "+dishes.toString());
-//        Log.wtf(TAG, "res: "+restaurants.toString());
 
     }
 
-    private void getDishesData(){
+    private void getData(){
 
     }
 

@@ -53,43 +53,39 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import pl.devant.whattoeat.R;
+import pl.devant.whattoeat.model.Statemets;
 import pl.devant.whattoeat.model.data.DataViewModel;
 import pl.devant.whattoeat.model.data.Restaurant;
 import pl.devant.whattoeat.presenters.RestaurantDescriptionActivity;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
-    //debug
+    //Debug
     private static final String TAG = "MapFragment";
-
-    private SharedPreferences mPrefs;
-
-    private ArrayList<Restaurant> restaurant;
-
     //Map configuration components
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
     private GoogleMap mMap;
     private Circle circle;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private Unbinder unbinder;
     //UI components
-    @BindView(R.id.mapView)
-    MapView mapView;
-    @BindView(R.id.floatingActionButton)
-    FloatingActionButton fab;
-
+    @BindView(R.id.mapView) MapView mapView;
+    @BindView(R.id.floatingActionButton) FloatingActionButton fab;
     private SeekBar rangeSeekBar;
     private SeekBar dishPriceSeekBar;
     private TextView dishPriceTextView;
     private TextView rangeTextView;
     private View view;
-    //finals
+    //Finals
     private static final float DEFAULT_ZOOM = 14f;
     private static final float DEFAULT_CIRCLE_RADIUS = 200f;
     private static final float DISH_PRICE_START = 1.00f;
     private static final float DISH_PRICE_END = 300.00f;
     private static final int CIRCLE_FILL_COLOR = 0x1600ff00;
     private static final int CIRCLE_COLOR = 0x8000ff00;
+    //Variables
+    private ArrayList<Restaurant> restaurants;
+    private Unbinder unbinder;
+
     public MapFragment() {}
 
     @Override
@@ -102,7 +98,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         getData();
         fabClick();
         Log.d(TAG, "onCreateView: Current circle range is " + DEFAULT_CIRCLE_RADIUS);
@@ -299,9 +294,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkers(){
-        for(int i = 0; i<restaurant.size(); i++ )
+        for(int i = 0; i<restaurants.size(); i++ )
         {
-            Restaurant rest = restaurant.get(i);
+            Restaurant rest = restaurants.get(i);
             Log.wtf(TAG, rest.toString());
             double lat = Double.parseDouble(rest.getCoordinates().get("latitude"));
             double lng = Double.parseDouble(rest.getCoordinates().get("longitude"));
@@ -313,11 +308,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void getData(){
-        Type listType = new TypeToken<List<Restaurant>>(){}.getType();
-        Gson gson = new Gson();
-        String json = mPrefs.getString("restaurants","");
-        restaurant = gson.fromJson(json, listType);
-        Log.wtf(TAG, restaurant.toString());
+        Bundle bundle = getArguments();
+        restaurants = bundle.getParcelableArrayList(Statemets.BUNDLE_RESTARANTS);
+        Log.d(TAG, "getData: " + restaurants);
     }
 
     private void onMarkerClick(){
